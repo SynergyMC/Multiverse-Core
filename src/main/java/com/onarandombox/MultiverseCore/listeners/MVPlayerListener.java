@@ -69,8 +69,7 @@ public class MVPlayerListener implements Listener {
             return;
         }
 
-
-        if (mvWorld.getBedRespawn() && event.isBedSpawn()) {
+        if (mvWorld.getBedRespawn() && (event.isBedSpawn() || event.isAnchorSpawn())) {
             this.plugin.log(Level.FINE, "Spawning " + event.getPlayer().getName() + " at their bed");
             return;
         }
@@ -252,7 +251,7 @@ public class MVPlayerListener implements Listener {
 
         // REMEMBER! getTo MAY be NULL HERE!!!
         // If the player was actually outside of the portal, adjust the from location
-        if (event.getFrom().getWorld().getBlockAt(event.getFrom()).getType() != Material.PORTAL) {
+        if (event.getFrom().getWorld().getBlockAt(event.getFrom()).getType() != Material.NETHER_PORTAL) {
             Location newloc = this.plugin.getSafeTTeleporter().findPortalBlockNextTo(event.getFrom());
             // TODO: Fix this. Currently, we only check for PORTAL blocks. I'll have to figure out what
             // TODO: we want to do here.
@@ -304,17 +303,17 @@ public class MVPlayerListener implements Listener {
                     + "' was allowed to go to '" + event.getTo().getWorld().getName()
                     + "' because enforceaccess is off.");
         }
-        if (!plugin.getMVConfig().isUsingDefaultPortalSearch()) {
-            try {
-                Class.forName("org.bukkit.TravelAgent");
-                if (event.getPortalTravelAgent() != null) {
-                    event.getPortalTravelAgent().setSearchRadius(plugin.getMVConfig().getPortalSearchRadius());
-                }
-            } catch (ClassNotFoundException ignore) {
-                plugin.log(Level.WARNING, "TravelAgent not available for PlayerPortalEvent for " + event.getPlayer().getName());
-            }
-
-        }
+//        if (!plugin.getMVConfig().isUsingDefaultPortalSearch()) {
+//            try {
+//                Class.forName("org.bukkit.TravelAgent");
+//                if (event.getPortalTravelAgent() != null) {
+//                    event.getPortalTravelAgent().setSearchRadius(plugin.getMVConfig().getPortalSearchRadius());
+//                }
+//            } catch (ClassNotFoundException ignore) {
+//                plugin.log(Level.WARNING, "TravelAgent not available for PlayerPortalEvent for " + event.getPlayer().getName());
+//            }
+//
+//        }
     }
 
     private void sendPlayerToDefaultWorld(final Player player) {

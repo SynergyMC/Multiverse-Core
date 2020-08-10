@@ -14,9 +14,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Vehicle;
-import org.bukkit.material.Bed;
 
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -151,16 +151,15 @@ public class SimpleBlockSafety implements BlockSafety {
      * @return The location of the other bed piece, or null if it was a jacked up bed.
      */
     private Location findOtherBedPiece(Location checkLoc) {
-        if (checkLoc.getBlock().getType() != Material.BED_BLOCK) {
+        if (checkLoc.getBlock().getBlockData() instanceof Bed) {
             return null;
         }
-        // Construct a bed object at this location
-        final Bed b = new Bed(Material.BED_BLOCK, checkLoc.getBlock().getData());
-        if (b.isHeadOfBed()) {
-            return checkLoc.getBlock().getRelative(b.getFacing().getOppositeFace()).getLocation();
+        Bed bed = (Bed) checkLoc.getBlock().getBlockData();
+        if (bed.getPart() == Bed.Part.HEAD) {
+            return checkLoc.getBlock().getRelative(bed.getFacing().getOppositeFace()).getLocation();
         }
         // We shouldn't ever be looking at the foot, but here's the code for it.
-        return checkLoc.getBlock().getRelative(b.getFacing()).getLocation();
+        return checkLoc.getBlock().getRelative(bed.getFacing()).getLocation();
     }
 
 
@@ -209,7 +208,8 @@ public class SimpleBlockSafety implements BlockSafety {
     @Override
     public boolean isEntitiyOnTrack(Location l) {
         Material currentBlock = l.getBlock().getType();
-        return (currentBlock == Material.POWERED_RAIL || currentBlock == Material.DETECTOR_RAIL || currentBlock == Material.RAILS);
+        return (currentBlock == Material.POWERED_RAIL || currentBlock == Material.DETECTOR_RAIL
+                || currentBlock == Material.RAIL || currentBlock == Material.ACTIVATOR_RAIL);
     }
 
     /**
