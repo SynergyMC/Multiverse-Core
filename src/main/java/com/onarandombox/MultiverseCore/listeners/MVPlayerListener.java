@@ -303,7 +303,7 @@ public class MVPlayerListener implements Listener {
                     + "' was allowed to go to '" + event.getTo().getWorld().getName()
                     + "' because enforceaccess is off.");
         }
-//        if (!plugin.getMVConfig().isUsingDefaultPortalSearch()) {
+        if (!plugin.getMVConfig().isUsingDefaultPortalSearch()) {
 //            try {
 //                Class.forName("org.bukkit.TravelAgent");
 //                if (event.getPortalTravelAgent() != null) {
@@ -312,8 +312,8 @@ public class MVPlayerListener implements Listener {
 //            } catch (ClassNotFoundException ignore) {
 //                plugin.log(Level.WARNING, "TravelAgent not available for PlayerPortalEvent for " + event.getPlayer().getName());
 //            }
-//
-//        }
+            event.setSearchRadius(plugin.getMVConfig().getPortalSearchRadius());
+        }
     }
 
     private void sendPlayerToDefaultWorld(final Player player) {

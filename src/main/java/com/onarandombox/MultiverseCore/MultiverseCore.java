@@ -340,7 +340,7 @@ public class MultiverseCore extends JavaPlugin implements MVPlugin, Core {
         getServer().getPluginManager().registerEvents(this.chatListener, this);
 
         this.initializeBuscript();
-        this.setupMetrics();
+        // this.setupMetrics();
 
         // Output a little snippet to show it's enabled.
         Logging.config("Version %s (API v%s) Enabled - By %s", this.getDescription().getVersion(), PROTOCOL, getAuthors());
